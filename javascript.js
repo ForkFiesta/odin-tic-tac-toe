@@ -1,12 +1,3 @@
-// const r0c0 =document.querySelector('#r0c0');
-// const r0c1 =document.querySelector('#r0c1');
-// const r0c2 =document.querySelector('#r0c2');
-// const r1c0 =document.querySelector('#r1c0');
-// const r1c1 =document.querySelector('#r1c1');
-// const r1c2 =document.querySelector('#r1c2');
-// const r2c0 =document.querySelector('#r2c0');
-// const r2c1 =document.querySelector('#r2c1');
-// const r2c2 =document.querySelector('#r2c2');
 
 /* 
 Gameboard represents the current state of the tic-tac-toe board
@@ -33,6 +24,22 @@ function gameBoard() {
       }
     }
   };
+
+  const checkAvailable = () => {
+    let counter = 0;
+    for (let i = 0; i<3; i++){
+        for (let j = 0; j<3; j++){
+            if (board[i][j]===null){
+                counter++;
+            }
+        }
+    }
+    if (counter > 0){
+        return true;
+    }else{
+        return false;
+    }
+  }
 
   // return current board
   const getBoard = () => board;
@@ -62,7 +69,7 @@ function gameBoard() {
     // Check columns
     for (let j = 0; j < 3; j++) {
       if (
-        board[0][j] !== "" &&
+        board[0][j] !== null &&
         board[0][j] === board[1][j] &&
         board[0][j] === board[2][j]
       ) {
@@ -71,14 +78,14 @@ function gameBoard() {
     }
     // check diagonals
     if (
-      board[0][0] !== "" &&
+      board[0][0] !== null &&
       board[0][0] === board[1][1] &&
       board[0][0] === board[2][2]
     ) {
       return board[0][0];
     }
     if (
-      board[0][2] !== "" &&
+      board[0][2] !== null &&
       board[0][2] === board[1][1] &&
       board[0][2] === board[2][0]
     ) {
@@ -95,6 +102,7 @@ function gameBoard() {
     resetBoard,
     printBoard,
     checkWinner,
+    checkAvailable
   };
 }
 
@@ -121,9 +129,27 @@ const gameController = () => {
   //   const resetBoard = () => gameboard.resetBoard();
   const playerOne = createPlayer("Player One", "O", true);
   const playerTwo = createPlayer("player Two", "X", false);
+
   let currentPlayer = playerOne;
   const playRound = () => {
     gameboard.printBoard();
+    const playerOneScore = document.createElement("p");
+    const playerTwoScore = document.createElement("p");
+
+
+    playerOneScore.classList.add("playerScore");
+    playerTwoScore.classList.add("playerScore");
+
+
+    playerOneScore.innerHTML = playerOne.getScore();
+    playerTwoScore.innerHTML = playerTwo.getScore();
+
+    const playerOneDiv = document.querySelector(".playerOneScore");
+    const playerTwoDiv = document.querySelector(".playerTwoScore");
+
+    playerOneDiv.appendChild(playerOneScore);
+    playerTwoDiv.appendChild(playerTwoScore);
+
 
     let selectedCell;
     let row;
@@ -140,6 +166,7 @@ const gameController = () => {
         // console.log(column);
         const docCell = document.querySelector(`#${selectedCell}`);
         let childText = document.createElement("p");
+        childText.classList.add("temp");
         childText.innerHTML = currentPlayer.shape;
         docCell.appendChild(childText);
 
@@ -151,15 +178,44 @@ const gameController = () => {
             if (playerOne.shape === playerWinnerShape) {
               console.log("Player One Wins!");
               playerOne.increaseScore();
+              playerOneScore.innerHTML = playerOne.getScore();
               gameboard.resetBoard()
+              let temp = document.querySelectorAll('.temp');
+              temp.forEach(element => {
+                element.remove();
+                
+              });
             } else {
               console.log("Player Two Wins!");
               playerTwo.increaseScore();
+              playerTwoScore.innerHTML = playerTwo.getScore();
               gameboard.resetBoard();
+              let temp = document.querySelectorAll('.temp');
+              temp.forEach(element => {
+                element.remove();
+                
+              });
+              
             }
             
           }
-          currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        let spotsRemaining = gameboard.checkAvailable()
+        console.log(spotsRemaining);
+
+        if (spotsRemaining){
+            currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        }
+        else {
+            gameboard.resetBoard();
+            let temp = document.querySelectorAll('.temp');
+            temp.forEach(element => {
+              element.remove();
+              
+            });
+
+        }
+
+        
     // playRound();
       });
     });
