@@ -30,3 +30,71 @@ footer {
     color: white;
     text-align: center;
 }
+.main_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-container {
+    margin-top: 50px;
+    height: 500px;
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+#r0c0{
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+}
+#r0c1{
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+}
+#r0c2{
+    /* border-right: 5px solid black; */
+    border-bottom: 5px solid black;
+}
+#r1c0{
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+}
+#r1c1{
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+}
+#r1c2{
+    border-bottom: 5px solid black;
+    /* border-right: 5px solid black; */
+}
+#r2c0{
+    border-right: 5px solid black;
+
+}
+#r2c1{
+    border-right: 5px solid black;
+
+}
+
+.grid-container div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+}
+
+.playerScores {
+    margin-top: 100px;
+    display: flex;
+    gap: 500px;
+    font-size: 50px;
+
+
+}
+
+.cell:hover{
+    background-color: rgb(255, 153, 0);
+}
