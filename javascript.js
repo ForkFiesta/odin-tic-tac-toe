@@ -1,4 +1,3 @@
-
 /* 
 Gameboard represents the current state of the tic-tac-toe board
 Each square is a cell that can hold a player's shape (X or O)
@@ -27,19 +26,19 @@ function gameBoard() {
 
   const checkAvailable = () => {
     let counter = 0;
-    for (let i = 0; i<3; i++){
-        for (let j = 0; j<3; j++){
-            if (board[i][j]===null){
-                counter++;
-            }
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (board[i][j] === null) {
+          counter++;
         }
+      }
     }
-    if (counter > 0){
-        return true;
-    }else{
-        return false;
+    if (counter > 0) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
 
   // return current board
   const getBoard = () => board;
@@ -102,7 +101,7 @@ function gameBoard() {
     resetBoard,
     printBoard,
     checkWinner,
-    checkAvailable
+    checkAvailable,
   };
 }
 
@@ -136,10 +135,8 @@ const gameController = () => {
     const playerOneScore = document.createElement("p");
     const playerTwoScore = document.createElement("p");
 
-
     playerOneScore.classList.add("playerScore");
     playerTwoScore.classList.add("playerScore");
-
 
     playerOneScore.innerHTML = playerOne.getScore();
     playerTwoScore.innerHTML = playerTwo.getScore();
@@ -150,7 +147,6 @@ const gameController = () => {
     playerOneDiv.appendChild(playerOneScore);
     playerTwoDiv.appendChild(playerTwoScore);
 
-
     let selectedCell;
     let row;
     let column;
@@ -159,64 +155,62 @@ const gameController = () => {
     cells.forEach((element) => {
       element.addEventListener("click", () => {
         selectedCell = element.id;
-        console.log("selected Cell: "+ selectedCell)
+        console.log("selected Cell: " + selectedCell);
         let stringCell = selectedCell.toString();
         row = Number(stringCell.slice(1, 2));
         column = Number(stringCell.slice(-1));
         // console.log(column);
+
+        // Check if the cell is already occupied before doing anything
+        if (gameboard.getBoard()[row][column] !== null) {
+          console.log("Cell already occupied, choose another one.");
+          return; // Exit if the cell is occupied
+        }
+
         const docCell = document.querySelector(`#${selectedCell}`);
         let childText = document.createElement("p");
         childText.classList.add("temp");
         childText.innerHTML = currentPlayer.shape;
         docCell.appendChild(childText);
 
-
         gameboard.addShape(currentPlayer.shape, row, column);
 
         let playerWinnerShape = gameboard.checkWinner();
         if (playerWinnerShape) {
-            if (playerOne.shape === playerWinnerShape) {
-              console.log("Player One Wins!");
-              playerOne.increaseScore();
-              playerOneScore.innerHTML = playerOne.getScore();
-              gameboard.resetBoard()
-              let temp = document.querySelectorAll('.temp');
-              temp.forEach(element => {
-                element.remove();
-                
-              });
-            } else {
-              console.log("Player Two Wins!");
-              playerTwo.increaseScore();
-              playerTwoScore.innerHTML = playerTwo.getScore();
-              gameboard.resetBoard();
-              let temp = document.querySelectorAll('.temp');
-              temp.forEach(element => {
-                element.remove();
-                
-              });
-              
-            }
-            
+          if (playerOne.shape === playerWinnerShape) {
+            console.log("Player One Wins!");
+            playerOne.increaseScore();
+            playerOneScore.innerHTML = playerOne.getScore();
+            gameboard.resetBoard();
+            let temp = document.querySelectorAll(".temp");
+            temp.forEach((element) => {
+              element.remove();
+            });
+          } else {
+            console.log("Player Two Wins!");
+            playerTwo.increaseScore();
+            playerTwoScore.innerHTML = playerTwo.getScore();
+            gameboard.resetBoard();
+            let temp = document.querySelectorAll(".temp");
+            temp.forEach((element) => {
+              element.remove();
+            });
           }
-        let spotsRemaining = gameboard.checkAvailable()
+        }
+        let spotsRemaining = gameboard.checkAvailable();
         console.log(spotsRemaining);
 
-        if (spotsRemaining){
-            currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
-        }
-        else {
-            gameboard.resetBoard();
-            let temp = document.querySelectorAll('.temp');
-            temp.forEach(element => {
-              element.remove();
-              
-            });
-
+        if (spotsRemaining) {
+          currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+        } else {
+          gameboard.resetBoard();
+          let temp = document.querySelectorAll(".temp");
+          temp.forEach((element) => {
+            element.remove();
+          });
         }
 
-        
-    // playRound();
+        // playRound();
       });
     });
 
@@ -227,10 +221,7 @@ const gameController = () => {
     // );
     // const playerColInput = prompt(`Please Input your choice of Column:`);
 
-    
-
     // Switch turn
-    
   };
 
   return {
